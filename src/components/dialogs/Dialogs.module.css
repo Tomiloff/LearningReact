@@ -1,0 +1,44 @@
+.dialogs {
+  display: grid;
+  grid-template-columns: 2fr 10fr;
+}
+
+.dialogsItems {
+  padding: 10px;
+  margin-right: 30px;
+}
+
+.dialog {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.dialog img {
+  width: 50px;
+  height: auto;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.messages {
+  padding: 10px;
+  border-left: 1px solid black;
+}
+
+.message {
+
+}
+
+.messageElement {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.messageElement img {
+  width: 50px;
+  height: auto;
+  border-radius: 50%;
+  margin-right: 10px;
+}
