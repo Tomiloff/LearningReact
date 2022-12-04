@@ -2,34 +2,89 @@ import Preloader from '../../common/preloader/Preloader';
 import style from './ProfileInfo.module.css';
 // import ProfileStatus from "./ProfileStatus";
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
+import UserPhoto from "../../../assets/images/UserPhoto.png";
+import { useState } from 'react';
+import ProfileDataFormReduxForm from './ProfileDataForm';
 
 
-const ProfileInfo = ({profile, status, updateStatus}) => {
+const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, saveProfile}) => {
+
+  const [editMode, setEditMode] = useState(false);
 
   if (!profile) {
     return <Preloader />
   }
+
+  const onMainPhotoSelected = (e) => {
+    if (e.target.files.length) {
+      savePhoto(e.target.files[0]);
+    }
+  };
+
+  const onSubmit = (formData) => {
+    const promise = saveProfile(formData);
+    promise.then(
+      () => {
+        setEditMode(false);
+      }
+    )
+  };
   
   return (
     <div>
-      {/* <div>
-        <img src='https://gorod-kurort-anapa.ru/img/stati/21_velikie-plyazhi-velikoy-rossii.jpg' />
-      </div> */}
       <div className={style.descriptionBlock}>
-        <img src={profile.photos.large} />
-        <h2>{profile.fullName}</h2>
+        <img src={profile.photos.large || UserPhoto} className={style.mainPhoto} />
+        {isOwner && <input type="file" onChange={onMainPhotoSelected} />}
         <ProfileStatusWithHooks status={status} updateStatus={updateStatus} />
-        <h3>{profile.aboutMe}</h3>
-        <p>В поисках работы: {profile.lookingForAJob ? "да" : "нет"}</p>
-        <h3>Мои контакты</h3>
-        <p>facebook: {profile.contacts.facebook ? profile.contacts.facebook : "нет"}</p>
-        <p>website: {profile.contacts.website ? profile.contacts.website : "нет"}</p>
-        <p>vk: {profile.contacts.vk ? profile.contacts.vk : "нет"}</p>
-        <p>youtube: {profile.contacts.youtube ? profile.contacts.youtube : "нет"}</p>
-        <p>github: {profile.contacts.github ? profile.contacts.github : "нет"}</p>
+        {editMode ? <ProfileDataFormReduxForm initialValues={profile} profile={profile} onSubmit={onSubmit} /> : <ProfileData goToEditMode={() => {setEditMode(true)}} profile={profile} isOwner={isOwner} />}
       </div>
     </div>
   );
+};
+
+
+
+const ProfileData = ({profile, isOwner, goToEditMode}) => {
+  return (
+    <div>
+      <div>
+        {isOwner && <button onClick={goToEditMode}>Редактировать</button>}
+      </div>
+      <div>
+        <h2>{profile.fullName}</h2>
+      </div>
+      <div>
+        <b>В поисках работы:</b> {profile.lookingForAJob ? "да" : "нет"}
+      </div>
+        {profile.lookingForAJob &&
+          <div>
+            <b>Skils:</b> {profile.lookingForAJobDescription}
+          </div>
+        }
+      <div>
+          <b>About me:</b> {profile.aboutMe}
+      </div>
+      <div>
+         <h3>Мои контакты</h3> {Object.keys(profile.contacts).map(key => {
+          return (
+            <Contact key={key} contactTitle={key} contactValue={profile.contacts[key]} />
+          )
+         })}
+      </div>
+    </div>
+  )
+};
+
+
+
+
+
+const Contact = ({contactTitle, contactValue}) => {
+  return (
+    <div>
+      <b>{contactTitle}</b>: {contactValue ? contactValue : "нет"}
+    </div>
+  )
 };
 
 export default ProfileInfo;

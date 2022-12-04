@@ -39,7 +39,7 @@
 
 import React, { Suspense } from 'react';
 import { connect, Provider } from 'react-redux';
-import { Routes, Route, HashRouter } from 'react-router-dom';
+import { Routes, Route, HashRouter, Navigate } from 'react-router-dom';
 import './App.css';
 // import DialogsContainer from './components/dialogs/DialogsContainer';
 
@@ -95,9 +95,18 @@ const UsersContainer = React.lazy(() => import('./components/users/UsersContaine
 
 
 class App extends React.Component {
+  catchAllUnhandleErrors = (promiseRejectionEvent) => {
+    alert("Some error occurred");
+   // console.error(promiseRejectionEvent);
+  }
 
   componentDidMount() {
     this.props.initializeApp();
+    window.addEventListener("unhandledrejection", this.catchAllUnhandleErrors);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("unhandledrejection", this.catchAllUnhandleErrors);
   }
 
   render() {  
@@ -113,6 +122,7 @@ class App extends React.Component {
         <div className='app-wrapper-content'>
         <Suspense fallback={<Preloader />}>
           <Routes>
+            <Route exact path="/" element={<Navigate to={'/profile'} /> } />
             <Route path="/dialogs/*" 
                   element= {<DialogsContainer/>}/>
             <Route path="/profile/:userId" 
@@ -125,6 +135,7 @@ class App extends React.Component {
             <Route path="/friends" element= {<Friends/>}/>
             <Route path="/users" element= {<UsersContainer />}/>
             <Route path="/login" element= {<LoginPage />}/>
+            <Route exact path="*" element={<div>404 NOT FOUND</div> } />
           </Routes>
         </Suspense>
         </div>
@@ -132,7 +143,6 @@ class App extends React.Component {
     );
   }
 };
-
 
 
 const withRouter = (Component) => {
@@ -172,9 +182,9 @@ const SamuraiJSApp = (props) => {
   return(
     <HashRouter>
       <Provider store={store}>
-        <React.StrictMode>
+        {/* <React.StrictMode> */}
           <AppContainer/>
-        </React.StrictMode>
+        {/* </React.StrictMode> */}
       </Provider>
     </HashRouter>  
   )

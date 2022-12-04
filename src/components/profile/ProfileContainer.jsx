@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
 import Profile from './Profile';
-import { getUserProfile, getMeProfile, getStatus, updateStatus } from "../redux/profile-reducer";
+import { getUserProfile, getMeProfile, getStatus, updateStatus, savePhoto, saveProfile } from "../redux/profile-reducer";
 import { withAuthRedirect } from '../../hoc/withAuthRedirect'; 
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
@@ -10,6 +10,7 @@ import { compose } from 'redux';
 
 
 class ProfileContainer extends React.Component  {
+
   
   componentDidMount() {
     let userId = this.props.router.params.userId;
@@ -66,7 +67,7 @@ class ProfileContainer extends React.Component  {
     // if (!this.props.isAuth) return <Navigate to="/login" /> 
 
     return (
-      <Profile {...this.props} profile={this.props.profile} status={this.props.status} updateStatus={this.props.updateStatus}/>
+      <Profile {...this.props} profile={this.props.profile} status={this.props.status} updateStatus={this.props.updateStatus} isOwner={!this.props.router.params.userId} savePhoto={this.props.savePhoto} saveProfile={this.props.saveProfile}/>
     );
   }
 };
@@ -96,6 +97,7 @@ const withRouter = (Component) => {
     
 		return (
       <Component {...props} router={{ params, navigate }} />
+      
     );
 	}
 	return ComponentWithRouterProp;
@@ -103,7 +105,7 @@ const withRouter = (Component) => {
 
 
 export default compose(
-  connect(mapStateToProps, { getUserProfile, getMeProfile, getStatus, updateStatus }),
+  connect(mapStateToProps, { getUserProfile, getMeProfile, getStatus, updateStatus, savePhoto, saveProfile }),
   withRouter,
   // withAuthRedirect
 )(ProfileContainer);
