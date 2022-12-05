@@ -11,7 +11,7 @@ const initialState = {
   email: null,
   login: null,
   isAuth: false,
-  captchaUrl: null // if null, then captcha is not required
+  captchaUrl: null 
 };
   
 const authReducer = (state = initialState, action) => {
@@ -47,7 +47,6 @@ export const login = (email, password, rememberMe, captcha) => async (dispatch) 
   
   let response = await authAPI.login(email, password, rememberMe, captcha)
     if(response.data.resultCode === 0) {
-      // success, get auth data
       dispatch(getAuthUserData());
     } else {
       if (response.data.resultCode === 10) {
@@ -78,97 +77,3 @@ export const logout = () => async (dispatch) => {
 
 
 export default authReducer;
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { authAPI } from "../../api/api";
-
-
-// const SET_USER_DATA = "SET_USER_DATA";
-// const SET_PERMISSION_TO_LOGIN = "SET_PERMISSION_TO_LOGIN";
-
-// const initialState = {
-//   id: null,
-//   email: null,
-//   login: null,
-//   isAuth: false
-// };
-  
-// const authReducer = (state = initialState, action) => {
-//   switch (action.type) {
-//     case SET_USER_DATA:
-//       return {
-//         ...state,
-//         ...action.data,
-//         isAuth: true
-//       };
-
-//       case SET_PERMISSION_TO_LOGIN:
-//       return {
-//         ...state,
-//         isAuth: true
-//       };
-
-//     default:
-//       return state;
-//   }
-// };
-
-
-// export const setAuthUserData = (id, email, login) => ({type: SET_USER_DATA, data: {id, email, login}});
-
-// export const setPermissionToLogin = () => ({type: SET_PERMISSION_TO_LOGIN});
-
-
-// export const getAuthUserData = () => (dispatch) => {
-//   authAPI.me()
-// 		.then((data) => {
-// 			if (data.resultCode === 0) {
-//         let {id, email, login} = data.data;
-//         dispatch(setAuthUserData(id, email, login));
-//       }
-// 		});
-// };
-
-
-
-// export const getPermissionToLogin = (email, password) => (dispatch) => {
-//   authAPI.logIn(email, password)
-//     .then(response => {
-//       if(response.data.data.resultCode === 0) {
-//         dispatch(setPermissionToLogin());
-//       }
-//     })
-// };
-
-
-
-// export default authReducer;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

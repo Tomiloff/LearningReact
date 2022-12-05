@@ -1,5 +1,3 @@
-
-import style from './ProfileInfo.module.css';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -42,5 +40,6 @@ const ProfileStatusWithHooks = (props) => {
         </div>
     )
 };
+
 
 export default ProfileStatusWithHooks;

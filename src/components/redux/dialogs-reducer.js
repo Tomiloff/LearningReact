@@ -60,9 +60,6 @@ const dialogsReducer = (state = initialState, action) => {
 
 
 export const addMessageCreator = (newMessageBody) => ({type: ADD_NEW_MESSAGE, newMessageBody});
-  
-// export const onMessageChangeCreator = (text) =>
-//   ({type: UPDATE_NEW_MESSAGE_TEXT, newText: text});  
 
 
 export default dialogsReducer;

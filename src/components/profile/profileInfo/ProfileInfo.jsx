@@ -1,6 +1,5 @@
 import Preloader from '../../common/preloader/Preloader';
 import style from './ProfileInfo.module.css';
-// import ProfileStatus from "./ProfileStatus";
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
 import UserPhoto from "../../../assets/images/UserPhoto.png";
 import { useState } from 'react';
@@ -43,7 +42,6 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, savePro
 };
 
 
-
 const ProfileData = ({profile, isOwner, goToEditMode}) => {
   return (
     <div>
@@ -76,9 +74,6 @@ const ProfileData = ({profile, isOwner, goToEditMode}) => {
 };
 
 
-
-
-
 const Contact = ({contactTitle, contactValue}) => {
   return (
     <div>
@@ -86,5 +81,6 @@ const Contact = ({contactTitle, contactValue}) => {
     </div>
   )
 };
+
 
 export default ProfileInfo;
